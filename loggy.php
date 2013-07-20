@@ -122,12 +122,12 @@ class loggy {
 	}
 
 	/**
-	 * Cleans the log
+	 * Clears the log
 	 *
-	 * @param   string  types to clean
+	 * @param   string  types to clear
 	 * @return  none
 	 */
-	public function clean($types = array())
+	public function clear($types = array())
 	{
 		// Make sure types is an array.
 		! is_array($types) AND $types = (array) $types;
