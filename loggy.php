@@ -2,8 +2,6 @@
 /**
  * A simple logging class.
  *
- * @note:
- *
  * This logger provides an easy way to format logging.
  * For best possible results, you should experiment with various
  * widths for type and divider depending on the length of your
@@ -27,7 +25,7 @@ class loggy {
 	/**
 	 * Type width
 	 *
-	 * If FALSE, the type will no be displayed.
+	 * If FALSE, the type will not be displayed.
 	 *
 	 * @var  int/FALSE
 	 */
@@ -37,14 +35,14 @@ class loggy {
 	 * Divider width
 	 *
 	 * If an array is used, the divider will not be displayed.
-	 * This is to ensure that a width is always set for align_right_seperator
+	 * This is to ensure that a width is always set for align_right_seperator.
 	 *
-	 * @var  int/array [array(int) to hide divider]
+	 * @var  int/array  [array(int) to hide divider]
 	 */
 	public $divider_width;
 
 	/**
-	 * Aligh right seperator
+	 * Align right seperator
 	 *
 	 * Message text entered after this seperator will be aligned right.
 	 * If NULL, all message text will be aligned left.
@@ -89,8 +87,8 @@ class loggy {
 	 * @param   int/FALSE      type width
 	 * @param   int/array      divider width
 	 * @param   string/FALSE   align right seperator
-	 * @param   string/FALSE   timezone identifier (@see http://www.php.net/manual/en/timezones.php)
 	 * @param   string/FALSE   date format (@see http://php.net/manual/en/function.date.php)
+	 * @param   string/FALSE   timezone identifier (@see http://www.php.net/manual/en/timezones.php)
 	 * @return  none
 	 */
 	public function __construct(
@@ -124,7 +122,7 @@ class loggy {
 	/**
 	 * Clears the log
 	 *
-	 * @param   string  types to clear
+	 * @param   string  types to clear  [empty array clears all types]
 	 * @return  none
 	 */
 	public function clear($types = array())
@@ -159,7 +157,7 @@ class loggy {
 	/**
 	 * Gets the items in the log
 	 *
-	 * @param   array  types to get
+	 * @param   array  types to get  [empty array returns all types]
 	 * @return  array  items
 	 */
 	public function get($types = array())
@@ -176,6 +174,7 @@ class loggy {
 		else
 		{
 			$items = array();
+
 			foreach ($this->items as $item)
 			{
 				if (in_array($item['type'], $types))
@@ -191,7 +190,7 @@ class loggy {
 	/**
 	 * Counts logged items
 	 *
-	 * @param   array  types to count
+	 * @param   array  types to count  [empty array counts all types]
 	 * @return  int    count
 	 */
 	public function count($types = array()) 
@@ -224,7 +223,7 @@ class loggy {
 	 * Writes the logged items to file
 	 *
 	 * @param   string  filename
-	 * @param   array   types to write
+	 * @param   array   types to write  [empty array writes all types]
 	 * @return  bool    written
 	 */
 	public function write($filename, $types = array())
@@ -233,26 +232,8 @@ class loggy {
 
 		if ($this->write_enabled)
 		{
-			// Make sure types is an array.
-			! is_array($types) AND $types = (array) $types;
-
-			// All types are allowed.
-			if (empty($types))
-			{
-				$items = $this->items;
-			}
-			// Only specific types are allowed.
-			else
-			{
-				$items = array();
-				foreach ($this->items as $item)
-				{
-					if (empty($types) OR in_array($item['type'], $types))
-					{
-						$items[] = $item;
-					}
-				}
-			}
+			// Get all the items to write.
+			$items = $this->get($types);
 
 			// Proceed if we have items to log and if the log file can be opened.
 			if (count($items) > 0 AND $handle = fopen($filename, 'a'))
@@ -261,7 +242,7 @@ class loggy {
 				$log = '';
 
 				// Set the divider.
-				is_int($this->divider_width) AND $log .= str_repeat('-', $this->divider_width)."\n";
+				is_int($this->divider_width) AND $log .= str_repeat('-', $this->divider_width) . "\n";
 
 				// Set the date.
 				if ($this->date_format)
@@ -305,7 +286,7 @@ class loggy {
 						$log .= $message[1];
 					}
 
-					// Carriage return.
+					// Do a carriage return.
 					$log .= "\n";
 				}
 
