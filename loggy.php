@@ -207,6 +207,7 @@ class loggy {
 		else
 		{
 			$count = 0;
+
 			foreach ($this->items as $item)
 			{
 				if (in_array($item['type'], $types))
