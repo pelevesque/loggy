@@ -68,10 +68,10 @@ First, create some blank files to store your logs. Make sure they are writable.
     $num_logged_items = $loggy->count();
 
     // Count only one type of logged items.
-    #num_errors = $log = $loggy->get('error');
+    #num_errors = $log = $loggy->count('error');
 
     // Get many types of logged items,
-    $num_items = $loggy->get(array('error', 'feature', 'warning'));
+    $num_items = $loggy->count(array('error', 'feature', 'warning'));
 
 ### Writing Log To File
 
