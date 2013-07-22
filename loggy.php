@@ -3,9 +3,8 @@
  * A simple logging class.
  *
  * This logger provides an easy way to format logging.
- * For best possible results, you should experiment with various
- * widths for type and divider depending on the length of your
- * longest message type.
+ * For best possible results, experiment with various type
+ * widths depending on the length of your longest message type.
  *
  * @version     1.0
  * @author      Pierre-Emmanuel Lévesque
@@ -34,22 +33,11 @@ class loggy {
 	/**
 	 * Divider width
 	 *
-	 * If an array is used, the divider will not be displayed.
-	 * This is to ensure that a width is always set for align_right_seperator.
+	 * If FALSE, the divider will not be displayed.
 	 *
-	 * @var  int/array  [array(int) to hide divider]
+	 * @var  int/FALSE
 	 */
 	public $divider_width;
-
-	/**
-	 * Align right seperator
-	 *
-	 * Message text entered after this seperator will be aligned right.
-	 * If NULL, all message text will be aligned left.
-	 *
-	 * @var  string/NULL
-	 */
-	public $align_right_seperator;
 
 	/**
 	 * Date format
@@ -85,24 +73,21 @@ class loggy {
 	 *
 	 * @param   bool           write enabled
 	 * @param   int/FALSE      type width
-	 * @param   int/array      divider width
-	 * @param   string/FALSE   align right seperator
+	 * @param   int/FALSE      divider width
 	 * @param   string/FALSE   date format (@see http://php.net/manual/en/function.date.php)
 	 * @param   string/FALSE   timezone identifier (@see http://www.php.net/manual/en/timezones.php)
 	 * @return  none
 	 */
 	public function __construct(
 		$write_enabled = TRUE,
-		$type_width = 10,
+		$type_width = 20,
 		$divider_width = 80,
-		$align_right_seperator = FALSE,
 		$date_format = 'D F j, G:i:s T, Y',
 		$timezone_identifier = 'UTC'
 	) {
 		$this->write_enabled = $write_enabled;
 		$this->type_width = $type_width;
 		$this->divider_width = $divider_width;
-		$this->align_right_seperator = $align_right_seperator;
 		$this->date_format = $date_format;
 		$this->timezone_identifier = $timezone_identifier;
 	}
@@ -243,7 +228,10 @@ class loggy {
 				$log = '';
 
 				// Set the divider.
-				is_int($this->divider_width) AND $log .= str_repeat('-', $this->divider_width) . "\n";
+				if ($this->divider_width)
+				{
+					$log .= str_repeat('-', $this->divider_width) . "\n";
+				}
 
 				// Set the date.
 				if ($this->date_format)
@@ -268,31 +256,15 @@ class loggy {
 						$indent += $this->type_width + 3;
 					}
 
-					// Force the message into an array.
-					$message = (array) $item['message'];
-
-					// Break up the message if it has right alignment.
-					! empty($this->align_right_seperator) AND $message = explode($this->align_right_seperator, $message[0]);
-
-					// Set the left aligned message.
-					$log .= $message[0];
-
-					// Set the right aligned message.
-					if (isset($message[1]))
-					{
-						$indent += strlen($message[0]) + strlen($message[1]);
-						$divider_width = (array) $this->divider_width;
-						$align_width = $divider_width[0] - $indent;
-						$align_width > 0 AND $log .= str_repeat(' ', $align_width);
-						$log .= $message[1];
-					}
-
-					// Do a carriage return.
-					$log .= "\n";
+					// Set the message.
+					$log .= $message . "\n";
 				}
 
 				// Try to write the log to file.
-				fwrite($handle, $log) AND $written = TRUE;
+				if (fwrite($handle, $log))
+				{
+					$written = TRUE;
+				}
 
 				// Close the file.
 				fclose($handle);
