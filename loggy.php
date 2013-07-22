@@ -236,7 +236,11 @@ class loggy {
 				// Set the date.
 				if ($this->date_format)
 				{
-					$this->timezone_identifier AND date_default_timezone_set($this->timezone_identifier);
+					if ($this->timezone_identifier)
+					{
+						date_default_timezone_set($this->timezone_identifier);
+					}
+
 					$log .= date($this->date_format)."\n";
 				}
 
