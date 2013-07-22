@@ -10,7 +10,7 @@
  * @version     1.0
  * @author      Pierre-Emmanuel Lévesque
  * @email       pierre.e.levesque@gmail.com
- * @copyright   Copyright 2011, Pierre-Emmanuel Lévesque
+ * @copyright   Copyright 2011-2013, Pierre-Emmanuel Lévesque
  * @license     MIT License - @see LICENSE.md
  */
 class loggy {
