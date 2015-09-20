@@ -1,8 +1,8 @@
 {
-    "name": "pel/freesound-api",
+    "name": "pel/loggy",
     "description": "A simple PHP logging class.",
     "license": "MIT",
-    "keywords": ["loggging"],
+    "keywords": ["logger"],
     "authors": [
         {
             "name": "Pierre-Emmanuel Lévesque",
